@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 785ed10dff4c3264f80009d8e738e190
+timeCreated: 1582056705
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - countText_A: {instanceID: 0}
+  - countText_B: {instanceID: 0}
+  - winText: {instanceID: 0}
+  - Ganancia: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

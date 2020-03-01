@@ -198,8 +198,8 @@ public class GeneralScript : MonoBehaviour {
 		GameObject otherGanancia = Instantiate(Ganancia); // We generate a new game object as an instance of the corresponding prefad
 		GameObject objetPikUps = GameObject.Find ("PikUps"); // We obtain the object of game "PikUps", and then turn object "otherGanancia" into a descendant of this
 			// 
-		float x_coordinate = Random.Range (-50.0f, 50.0f);
-		float z_coordinate = Random.Range (-50.0f, 50.0f);
+		float x_coordinate = Random.Range (-45.0f, 45.0f);
+		float z_coordinate = Random.Range (-45.0f, 45.0f);
 		Vector3 ProfitLocation  = new Vector3 (x_coordinate, 3.0f, z_coordinate);  // random profit position
 		otherGanancia.transform.position = ProfitLocation;
 
@@ -220,7 +220,15 @@ public class GeneralScript : MonoBehaviour {
 	// The game is over
 	void SetTextAndEnd ()
 	{
-		winText.text = "The winner is : " + winnerTex + "\n Team A : " + countText_A.text +"\n Team B : "+ countText_B.text;
+		// If there is a tie, it takes priority
+		if (winnerTex.Equals("Tie!"))
+		{
+			winText.text = winnerTex;
+		}
+		else
+		{
+			winText.text = "The winner is : " + winnerTex + "\n Team A : " + countText_A.text + "\n Team B : " + countText_B.text;
+		}
 
 		// Hide the timer (since it's no longer relevant)
 		countDownTextContainer.gameObject.SetActive(false);

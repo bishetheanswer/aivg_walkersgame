@@ -12,3 +12,6 @@ All changes done will be detailed in the following file.
 * Added a death plane below the playzone that destroys any walker or player that touches it.
 * Added a timer that ticks down (the match duration can be selected from the options in the general script). Once the clock reaches 0, a winner will be selected (the player with the best score, if there is a tie then the player with the most health, and if there is a tie no winner is declared)
 * Ensured that if a team leader reaches the death plane, the game ends.
+* Made both teams start in opposite ends.
+* Modified the rewards appearance.
+* Updated the rewards creating script to ensure that they don't clip with walls.

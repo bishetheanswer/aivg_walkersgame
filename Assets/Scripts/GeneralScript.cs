@@ -40,6 +40,7 @@ public class GeneralScript : MonoBehaviour {
 //	public long iniPlayTime; // Time when the game started
 //	public long gameClock; // Elapsed game time
 
+
 	// Game board parameters
 	// public GameObject GameBoard; // For profit objects
 	// 
@@ -58,6 +59,11 @@ public class GeneralScript : MonoBehaviour {
 	public int numProfits; // Number of profits that must be on the board
 	public int activeProfits;  // Number of profits that exist in board must be on the board
 	public int createdProfits;  // Total number of profits created during the game
+
+	// ADDED BY TEAM 2
+
+	public bool invisibleWallsActive; // Whether to create or not the invisible walls.
+	public GameObject invisibleWalls; // Container for the invisible walls
 
 
 	// Use this for initialization
@@ -86,6 +92,15 @@ public class GeneralScript : MonoBehaviour {
 		activeProfits = 0;
 		createdProfits = 0;
 		numProfits = 3;
+
+		// TEAM 2
+
+		// If invisibleWallsActive is not true, then the invisible walls must be disabled
+		// (if they are inactive, their colliders will not be active)
+		if (!invisibleWallsActive)
+		{
+			invisibleWalls.SetActive(false);
+		}
 	}
 
 	// This function is executed at every step (frames) of the game.

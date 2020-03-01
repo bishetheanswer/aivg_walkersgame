@@ -65,6 +65,10 @@ public class GeneralScript : MonoBehaviour {
 	public bool invisibleWallsActive; // Whether to create or not the invisible walls.
 	public GameObject invisibleWalls; // Container for the invisible walls
 
+	public int playTime; // The maximum play time that the match can last (in seconds)
+	private float countDown; // Time remaining in the match (in seconds)
+	public Text countDownTextContainer; // Text displaying the time remaining
+	private string countDownText; // Actual string to display on the counter
 
 	// Use this for initialization
 	void Start () {
@@ -95,6 +99,9 @@ public class GeneralScript : MonoBehaviour {
 
 		// TEAM 2
 
+		// Set an internal clock to count the time that has passed.
+		countDown = (float)playTime;
+
 		// If invisibleWallsActive is not true, then the invisible walls must be disabled
 		// (if they are inactive, their colliders will not be active)
 		if (!invisibleWallsActive)
@@ -107,7 +114,7 @@ public class GeneralScript : MonoBehaviour {
 	void Update ()
 	{   
 		// End of game conditions
-			// The TargetGain value is reached	
+		// The TargetGain value is reached	
 		if (countGanancia_A >= TargetGain) 
 		{
 			winnerTex = "Team A";
@@ -130,17 +137,6 @@ public class GeneralScript : MonoBehaviour {
 			SetTextAndEnd ();
 		}
 
-		/* ***********
-		// Look elapsed game time (gameClock)
-		gameClock = currentTime - iniPlayTime; // Elapsed game time
-		if (gameClock > maxPlayTime) 
-		{
-			// control the winner team according to the profits obtained
-			// winnerTex = "Team ¿"; Indicar el ganador
-			SetTextAndEnd ();
-		}
-		**************** */
-
 		// We update the scores
 		SetCountText ();
 
@@ -148,6 +144,52 @@ public class GeneralScript : MonoBehaviour {
 		while (activeProfits < numProfits) 
 		{
 			creaGanancia ();
+		}
+
+		// Update the timer and check the time that has passed
+		countDown -= Time.deltaTime;
+		if (countDown <= 0.0f)
+		{
+			// Counter is below or equal to 0: time is over
+
+			// Check who won: first, check for points
+			if (countGanancia_A > countGanancia_B)
+			{
+				winnerTex = "Team A";
+			}
+			else if (countGanancia_B > countGanancia_A)
+			{
+				winnerTex = "Team B";
+			}
+			else
+			{
+				// A tie has happened: tie break will be decided by health remaining
+				if (countLife_A > countLife_B)
+				{
+					winnerTex = "Team A";
+				}
+				else if (countLife_B > countLife_A)
+				{
+					winnerTex = "Team B";
+				}
+				else
+				{
+					// A tie has happened in score and health: simply declare the game as a tie
+					winnerTex = "Tie!";
+				}
+			}
+
+			// Display the final results and end the game
+			SetTextAndEnd();
+
+			
+		}
+		else
+		{
+			// Counter above 0: the game is still in play
+			// We use a ceiling to ensure that the countdown is rounded up to the closest number (f. ex. we're interested in displaying 1 if 0.3 secs are remaining)
+			countDownText = Mathf.CeilToInt(countDown).ToString() + "s";
+			countDownTextContainer.text = countDownText;
 		}
 	}
 
@@ -179,6 +221,10 @@ public class GeneralScript : MonoBehaviour {
 	void SetTextAndEnd ()
 	{
 		winText.text = "The winner is : " + winnerTex + "\n Team A : " + countText_A.text +"\n Team B : "+ countText_B.text;
+
+		// Hide the timer (since it's no longer relevant)
+		countDownTextContainer.gameObject.SetActive(false);
+
 		Time.timeScale = 0;  // Paramos el juego al llegar al final
 	}
 }

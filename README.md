@@ -15,3 +15,8 @@ All changes done will be detailed in the following file.
 * Made both teams start in opposite ends.
 * Modified the rewards appearance.
 * Updated the rewards creating script to ensure that they don't clip with walls.
+* Re-added gravity to walkers from team B.
+* Updated player collisions to check using a collider instead of a trigger (allowing the creation of other triggers on the walkers)
+* Updated implementation of the PlayerCharacter script to better compute triggers and colliders.
+* Updated implementation of RandomMovement to properly apply forces on the FixedUpdate step.
+* Removed initial script from all walkers, so it's easier to apply the appropiate scripts (the RandomMovement script is still available on the Scripts folder)

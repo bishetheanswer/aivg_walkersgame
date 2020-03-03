@@ -25,21 +25,23 @@ public class DeathPlaneLogic : MonoBehaviour
         general = GameObject.Find("General").GetComponent<GeneralScript>();
     }
 
-    // All logic will be launched whenever something enters the collider (we want to delete the walkers WHEN they touch the trigger)
-    private void OnTriggerEnter(Collider other)
+    // All logic will be launched whenever something touches the deathplane.
+    // We want to avoid using a trigger, because walkers may use spheric triggers that touch this plane.
+    // A collision check will only check for collisions between two non-trigger colliders.
+    private void OnCollisionEnter(Collision collision)
     {
         // If a player character has been destroyed, the game has to end directly.
-        if(other.gameObject.CompareTag("Team A Player"))
+        if(collision.gameObject.CompareTag("Team A Player"))
         {
             general.countLife_A = 0;
         }
-        else if (other.gameObject.CompareTag("Team B Player"))
+        else if (collision.gameObject.CompareTag("Team B Player"))
         {
             general.countLife_B = 0;
         }
 
         // Disable the other game object
-        other.gameObject.SetActive(false);
+        collision.gameObject.SetActive(false);
     }
 
 }

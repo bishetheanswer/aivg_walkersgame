@@ -60,8 +60,8 @@ public class PlayerController : MonoBehaviour {
 			}
 			if (this.CompareTag ("Team B Player"))  // Player of team B
 			{
-				moveHorizontal = Input.GetAxis ("Horizontal"); // PENDIENTE modificar para que use otrs teclas
-				moveVertical = Input.GetAxis ("Vertical");
+				moveHorizontal = Input.GetAxis ("Horizontal2"); // PENDIENTE modificar para que use otrs teclas
+				moveVertical = Input.GetAxis ("Vertical2");
 			}
 
 			Vector3 movement_usr = new Vector3 (moveHorizontal, 0.0f, moveVertical);  // Direction vector of applied force
@@ -72,60 +72,47 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	// To eliminate the other objects with which it collides, when they are gains
+	// Only the score can be updated here
 	void OnTriggerEnter(Collider other) 
 	{
-		int countGanancia = 0;  // Local score points earner
-		int countLife = General.GetComponent<GeneralScript>().IniNumberLivesLeader;  // Local counter of remaining lives
-		//GameObjet.Find("nombre o label").GetComponent<GlobalData>().countGanancia_A = countGanancia;  // If we were to import the gameobject
-
-		// We take the general data
-		if (this.CompareTag ("Team A Player"))
+		// Check that we have touched a reward
+		if (other.gameObject.CompareTag("Ganancia"))
 		{
-			countGanancia = General.GetComponent<GeneralScript>().countGanancia_A;  // Score points earner
-			countLife = General.GetComponent<GeneralScript>().countLife_A;  // Counter of remaining lives
-		}
-		if (this.CompareTag ("Team B Player"))
-		{
-			countGanancia = General.GetComponent<GeneralScript>().countGanancia_B;  // Score points earner
-			countLife = General.GetComponent<GeneralScript>().countLife_B;  // Counter of remaining lives
-		}
-
-
-		// If the collision has been with a profit
-		if (other.gameObject.CompareTag ("Ganancia"))
-		{
-			other.gameObject.SetActive (false);  // We eliminate the game object from the profit
-			// We update the number of existing profits
-			countGanancia = countGanancia + 1;   
+			// Mark the reward as earned
+			other.gameObject.SetActive(false);
 			General.GetComponent<GeneralScript>().activeProfits = General.GetComponent<GeneralScript>().activeProfits - 1;
-		}
-
-		// If the collision has been with a walker
-		if (this.CompareTag ("Team A Player"))
-		{
-			if (other.gameObject.CompareTag ("Team B Walker")) 
+			
+			// Check the team to update the score
+			if (gameObject.CompareTag("Team A Player"))
 			{
-				countLife = countLife -1;
+				General.GetComponent<GeneralScript>().countGanancia_A = General.GetComponent<GeneralScript>().countGanancia_A + 1;
+			}
+			else if (gameObject.CompareTag("Team B Player"))
+			{
+				General.GetComponent<GeneralScript>().countGanancia_B = General.GetComponent<GeneralScript>().countGanancia_B + 1;
 			}
 		}
-		if (this.CompareTag ("Team B Player"))
+	}
+
+	// Used to check collisions, in order to compute health
+	void OnCollisionEnter(Collision collision)
+	{
+		// The logic will depend on the current team
+		if (gameObject.CompareTag("Team A Player"))
 		{
-			if (other.gameObject.CompareTag ("Team A Walker")) 
+			// Check if we have collided with the opposite team and update the score
+			if (collision.gameObject.CompareTag("Team B Walker"))
 			{
-				countLife = countLife -1;
+				General.GetComponent<GeneralScript>().countLife_A = General.GetComponent<GeneralScript>().countLife_A - 1;
 			}
 		}
-
-		// we record the data in general game objetc
-		if (this.CompareTag ("Team A Player"))
+		else if (gameObject.CompareTag("Team B Player"))
 		{
-			General.GetComponent<GeneralScript> ().countGanancia_A = countGanancia;  // Score points earner
-			General.GetComponent<GeneralScript>().countLife_A = countLife;  // Counter of remaining lives
-		}
-		if (this.CompareTag ("Team B Player"))
-		{
-			General.GetComponent<GeneralScript>().countGanancia_B = countGanancia;  // Score points earner
-			General.GetComponent<GeneralScript>().countLife_B = countLife;  // Counter of remaining lives
+			// Check if we have collided with the opposite team and update the score
+			if (collision.gameObject.CompareTag("Team A Walker"))
+			{
+				General.GetComponent<GeneralScript>().countLife_B = General.GetComponent<GeneralScript>().countLife_B - 1;
+			}
 		}
 	}
 

@@ -41,9 +41,13 @@ public class RandonMovement : MonoBehaviour {
 			estadoLatenciaCambios = 0;
 		}
 		estadoLatenciaCambios = estadoLatenciaCambios +1;
+	}
 
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical); // Vercor of force direction
-	
-		rb.AddForce (movement * General.GetComponent<GeneralScript>().force_walkers);  // We apply force with the corresponding module
+	// Used to apply the forces
+	void FixedUpdate()
+	{
+		Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical); // Vercor of force direction
+
+		rb.AddForce(movement * General.GetComponent<GeneralScript>().force_walkers);  // We apply force with the corresponding module
 	}
 }

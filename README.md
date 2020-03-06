@@ -20,3 +20,5 @@ All changes done will be detailed in the following file.
 * Updated implementation of the PlayerCharacter script to better compute triggers and colliders.
 * Updated implementation of RandomMovement to properly apply forces on the FixedUpdate step.
 * Removed initial script from all walkers, so it's easier to apply the appropiate scripts (the RandomMovement script is still available on the Scripts folder)
+
+## Week 2 - Group 1
